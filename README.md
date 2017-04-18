@@ -23,7 +23,7 @@ For testing a model on COCO or PASCAL, use the following script
   ${EXTRA_ARGS}
 ```
 
-GPU_ID is the GPU you want to train on
+GPU_ID is the GPU you want to test on
 NET_FINAL is the caffe-model to use
 PT_DIR in {pascal_voc, coco} 
 DATASET in {pascal_voc, coco} is the dataset to use
