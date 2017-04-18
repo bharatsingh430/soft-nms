@@ -5,9 +5,9 @@ This repository includes the code for Soft-NMS. It is also integrated with two o
 To test the models with soft-NMS, clone the project and test your models as in standard object detection pipelines. This repository supports Faster-RCNN and R-FCN where an additional flag can be used for soft-NMS.
 
 The flags are as follows,
-1) Standard NMS. Use flag 'TEST.SOFT_NMS' 0
-2) Soft-NMS with linear weighting. Use flag TEST.SOFT_NMS 1 (this is the default option) 
-3) Soft-NMS with gaussian weighting. Use flag TEST.SOFT_NMS 2
+1) Standard NMS. Use flag `TEST.SOFT_NMS` 0
+2) Soft-NMS with linear weighting. Use flag `TEST.SOFT_NMS` 1 (this is the default option) 
+3) Soft-NMS with gaussian weighting. Use flag `TEST.SOFT_NMS` 2
 
 In addition, you can specify the sigma parameter for gaussian weighting and the threshold parameter for linear weighting. Detections below 0.001 are discarded. For integrating soft-NMS in your code, refer to `cpu_soft_nms` function in `lib/nms/cpu_nms.pyx` and `soft_nms` wrapper function in `lib/fast_rcnn/nms_wrapper.py`. You can also implement your own weighting function in this file.
 
