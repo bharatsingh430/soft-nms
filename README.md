@@ -9,7 +9,7 @@ The flags are as follows,
 2) Soft-NMS with linear weighting. Use flag `TEST.SOFT_NMS` 1 (this is the default option) 
 3) Soft-NMS with Gaussian weighting. Use flag `TEST.SOFT_NMS` 2
 
-In addition, you can specify the sigma parameter for gaussian weighting and the threshold parameter for linear weighting. Detections below 0.001 are discarded. For integrating soft-NMS in your code, refer to `cpu_soft_nms` function in `lib/nms/cpu_nms.pyx` and `soft_nms` wrapper function in `lib/fast_rcnn/nms_wrapper.py`. You can also implement your own weighting function in this file.
+In addition, you can specify the sigma parameter for Gaussian weighting and the threshold parameter for linear weighting. Detections below 0.001 are discarded. For integrating soft-NMS in your code, refer to `cpu_soft_nms` function in `lib/nms/cpu_nms.pyx` and `soft_nms` wrapper function in `lib/fast_rcnn/nms_wrapper.py`. You can also implement your own weighting function in this file.
 
 For testing a model on COCO or PASCAL, use the following script
 
