@@ -24,10 +24,15 @@ For testing a model on COCO or PASCAL, use the following script
 ```
 
 GPU_ID is the GPU you want to test on
+
 NET_FINAL is the caffe-model to use
-PT_DIR in {pascal_voc, coco} 
+
+PT_DIR in {pascal_voc, coco} is the dataset directory
+
 DATASET in {pascal_voc, coco} is the dataset to use
-TEST_IMDB in {voc_0712_test,coco_2014_val} is the test imdb
+
+TEST_IMDB in {voc_0712_test,coco_2014_minival,coco_2014_test} is the test imdb
+
 TEST.SOFT_NMS in {0,1,2}. 0 is standard NMS, 1 perform soft-NMS with linear weighting and 2 performs soft-NMS with gaussian weighting
 
 Please refer to [py-R-FCN-multiGPU](https://github.com/bharatsingh430/py-R-FCN-multiGPU/) for details about setting up object detection pipelines.
