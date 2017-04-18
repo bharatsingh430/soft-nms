@@ -18,7 +18,7 @@ For testing a model on COCO or PASCAL, use the following script
   --def models/${PT_DIR}/${NET}/rfcn_end2end/test_agnostic.prototxt \
   --net ${NET_FINAL} \
   --imdb ${TEST_IMDB} \
-  --cfg experiments/cfgs/rfcn_end2end_ohem.yml \
+  --cfg experiments/cfgs/rfcn_end2end_ohem_${PT_DIR}.yml \
   --set TEST.SOFT_NMS 1 # performs soft-NMS with linear weighting
   ${EXTRA_ARGS}
 ```
@@ -31,7 +31,7 @@ TEST_IMDB in {voc_0712_test,coco_2014_val} is the test imdb
 TEST.SOFT_NMS in {0,1,2}. 0 is standard NMS, 1 perform soft-NMS with linear weighting and 2 performs soft-NMS with gaussian weighting
 
 Please refer to [py-R-FCN-multiGPU](https://github.com/bharatsingh430/py-R-FCN-multiGPU/) for details about setting up object detection pipelines.
-This repository also contains code for training these detectors on multiple GPUs. The COCO detection model for R-FCN can be found [here](https://drive.google.com/open?id=0B6T5quL13CdHOUc0UmRxWEFqTEk). All other detection models are publicly available.
+This repository also contains code for training these detectors on multiple GPUs. The COCO detection model for R-FCN can be found [here](https://drive.google.com/file/d/0B6T5quL13CdHMGtMUWFFSXd2Ym8). All other detection models are publicly available.
 
 
 ### Citing Soft-NMS
