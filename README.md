@@ -1,6 +1,6 @@
 # Soft-NMS
 
-This repository includes the code for Soft-NMS. Soft-NMS is integrated with two object detectors, R-FCN and Faster-RCNN. Soft-NMS paper can be found [here](https://arxiv.org/pdf/1704.04503.pdf).
+This repository includes the code for Soft-NMS. Soft-NMS is integrated with two object detectors, R-FCN and Faster-RCNN. The Soft-NMS paper can be found [here](https://arxiv.org/pdf/1704.04503.pdf).
 
 To test the models with soft-NMS, clone the project and test your models as in standard object detection pipelines. This repository supports Faster-RCNN and R-FCN where an additional flag can be used for soft-NMS.
 
