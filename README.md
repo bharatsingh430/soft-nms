@@ -38,9 +38,9 @@ This repository also contains code for training these detectors on multiple GPUs
 
 If you find this repository useful in your research, please consider citing:
 
-@misc{1704.04503,
-Author = {Navaneeth Bodla and Bharat Singh and Rama Chellappa and Larry S. Davis},
-Title = {Improving Object Detection With One Line of Code},
-Journal = {arXiv preprint arXiv:1704.04503},
-Year = {2017}
-}
+    @article{1704.04503,
+      Author = {Navaneeth Bodla and Bharat Singh and Rama Chellappa and Larry S. Davis},
+      Title = {Improving Object Detection With One Line of Code},
+      Journal = {arXiv preprint arXiv:1704.04503},
+      Year = {2017}
+    }
