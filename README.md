@@ -1,4 +1,4 @@
-#Soft-NMS
+# Soft-NMS
 
 This repository includes the code for Soft-NMS. It is also integrated with two object detectors, R-FCN and Faster-RCNN. Soft-NMS paper can be found [here](https://arxiv.org/pdf/1704.04503.pdf).
 
