@@ -33,6 +33,18 @@ TEST.SOFT_NMS in {0,1,2}. 0 is standard NMS, 1 perform soft-NMS with linear weig
 Please refer to [py-R-FCN-multiGPU](https://github.com/bharatsingh430/py-R-FCN-multiGPU/) for details about setting up object detection pipelines.
 This repository also contains code for training these detectors on multiple GPUs. The COCO detection model for R-FCN can be found [here](https://drive.google.com/file/d/0B6T5quL13CdHMGtMUWFFSXd2Ym8). All other detection models are publicly available.
 
+#### Results on MS-COCO
+
+|                   | training data       | test data          | mAP@[0.5:0.95]   | 
+|-------------------|:-------------------:|:-----------------------------:|:-----:|
+|R-FCN,       NMS   | COCO 2014 train+val -minival | COCO 2015 test-dev    | 31.1% |
+|R-FCN,  Soft-NMS L | COCO 2014 train+val -minival | COCO 2015 test-dev    | 32.2% |
+|R-FCN,  Soft-NMS G | COCO 2014 train+val -minival | COCO 2015 test-dev    | 32.4% |
+|F-RCNN, NMS        | COCO 2014 train+val -minival | COCO 2015 test-dev    | 24.4% |
+|F-RCNN, Soft-NMS L | COCO 2014 train+val -minival | COCO 2015 test-dev    | 25.5% |
+|F-RCNN, Soft-NMS G | COCO 2014 train+val -minival | COCO 2015 test-dev    | 25.5% |
+
+R-FCN uses ResNet-101 as the backbone CNN architecture, while Faster-RCNN is based on VGG16.
 
 ### Citing Soft-NMS
 
