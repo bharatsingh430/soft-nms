@@ -1,6 +1,5 @@
 // --------------------------------------------------------
-// R-FCN
-// Written by Yi Li, 2016.
+// Written by Bharat Singh, 2017.
 // --------------------------------------------------------
 
 #include <algorithm>
@@ -38,53 +37,91 @@ namespace caffe {
       // [start, end) interval for spatial sampling
       bottom_rois += n * 5;
       int roi_batch_ind = bottom_rois[0];
-      Dtype roi_start_w =
-        static_cast<Dtype>(round(bottom_rois[1])) * spatial_scale;
-      Dtype roi_start_h =
-        static_cast<Dtype>(round(bottom_rois[2])) * spatial_scale;
-      Dtype roi_end_w =
-        static_cast<Dtype>(round(bottom_rois[3]) + 1.) * spatial_scale;
-      Dtype roi_end_h =
-        static_cast<Dtype>(round(bottom_rois[4]) + 1.) * spatial_scale;
+      Dtype roi_start_w = bottom_rois[1] * spatial_scale;
+      Dtype roi_start_h = bottom_rois[2] * spatial_scale;
+      Dtype roi_end_w = bottom_rois[3] * spatial_scale;
+      Dtype roi_end_h = bottom_rois[4] * spatial_scale;
 
-      // Force too small ROIs to be 1x1
-      Dtype roi_width = max(roi_end_w - roi_start_w, 0.1);  // avoid 0
-      Dtype roi_height = max(roi_end_h - roi_start_h, 0.1);
+      Dtype roi_width = roi_end_w - roi_start_w;
+      Dtype roi_height = roi_end_h - roi_start_h;
 
       // Compute w and h at bottom
       Dtype bin_size_h = roi_height / static_cast<Dtype>(pooled_height);
       Dtype bin_size_w = roi_width / static_cast<Dtype>(pooled_width);
 
-      int hstart = floor(static_cast<Dtype>(ph) * bin_size_h
-                          + roi_start_h);
-      int wstart = floor(static_cast<Dtype>(pw)* bin_size_w
-                          + roi_start_w);
-      int hend = ceil(static_cast<Dtype>(ph + 1) * bin_size_h
-                        + roi_start_h);
-      int wend = ceil(static_cast<Dtype>(pw + 1) * bin_size_w
-                        + roi_start_w);
-      // Add roi offsets and clip to input boundaries
-      hstart = min(max(hstart, 0), height);
-      hend = min(max(hend, 0), height);
-      wstart = min(max(wstart, 0), width);
-      wend = min(max(wend, 0), width);
-      bool is_empty = (hend <= hstart) || (wend <= wstart);
+      // bin size is ratio of scaled roi height and 7,14, so it would be around 1,2,3
 
+      //ph, pw is the position in the roi
+
+      //therefore, we need use, bin size and ph to get the position of the 4 feature values
+
+      int x1, x2, y1, y2;
+      float px, py, pxmax, pymax, pxmin, pymin;
+      pxmax = min(max(roi_start_w + static_cast<Dtype>(pw + 0.75) * bin_size_w, 0.001), width - 1.001);
+      pymax = min(max(roi_start_h + static_cast<Dtype>(ph + 0.75) * bin_size_h, 0.001), height - 1.001);
+      pxmin = min(max(roi_start_w + static_cast<Dtype>(pw + 0.25) * bin_size_w, 0.001), width - 1.001);
+      pymin = min(max(roi_start_h + static_cast<Dtype>(ph + 0.25) * bin_size_h, 0.001), height - 1.001);
+
+      Dtype out_sum = 0;
       int gw = pw;
       int gh = ph;
       int c = (ctop*group_size + gh)*group_size + gw;
 
       bottom_data += (roi_batch_ind * channels + c) * height * width;
-      Dtype out_sum = 0;
-      for (int h = hstart; h < hend; ++h) {
-        for (int w = wstart; w < wend; ++w) {
-          int bottom_index = h*width + w;
-          out_sum += bottom_data[bottom_index];
-        }
-      }
 
-      Dtype bin_area = (hend - hstart)*(wend - wstart);
-      top_data[index] = is_empty? 0. : out_sum/bin_area;
+      px = pxmin;
+      py = pymin;
+
+      x1 = floor(px);
+      x2 = ceil(px);
+      y1 = floor(py);
+      y2 = ceil(py);
+
+      out_sum += (px-x1)*(py-y1) * bottom_data[int(y2*width + x2)];
+      out_sum += (px-x1)*(y2-py) * bottom_data[int(y1*width + x2)];
+      out_sum += (x2-px)*(py-y1) * bottom_data[int(y2*width + x1)];
+      out_sum += (x2-px)*(y2-py) * bottom_data[int(y1*width + x1)];
+
+      px = pxmax;
+      py = pymax;
+
+      x1 = floor(px);
+      x2 = ceil(px);
+      y1 = floor(py);
+      y2 = ceil(py);
+
+      out_sum += (px-x1)*(py-y1) * bottom_data[int(y2*width + x2)];
+      out_sum += (px-x1)*(y2-py) * bottom_data[int(y1*width + x2)];
+      out_sum += (x2-px)*(py-y1) * bottom_data[int(y2*width + x1)];
+      out_sum += (x2-px)*(y2-py) * bottom_data[int(y1*width + x1)];
+
+      px = pxmin;
+      py = pymax;
+
+      x1 = floor(px);
+      x2 = ceil(px);
+      y1 = floor(py);
+      y2 = ceil(py);
+
+      out_sum += (px-x1)*(py-y1) * bottom_data[int(y2*width + x2)];
+      out_sum += (px-x1)*(y2-py) * bottom_data[int(y1*width + x2)];
+      out_sum += (x2-px)*(py-y1) * bottom_data[int(y2*width + x1)];
+      out_sum += (x2-px)*(y2-py) * bottom_data[int(y1*width + x1)];
+
+      px = pxmax;
+      py = pymin;
+
+      x1 = floor(px);
+      x2 = ceil(px);
+      y1 = floor(py);
+      y2 = ceil(py);
+
+      out_sum += (px-x1)*(py-y1) * bottom_data[int(y2*width + x2)];
+      out_sum += (px-x1)*(y2-py) * bottom_data[int(y1*width + x2)];
+      out_sum += (x2-px)*(py-y1) * bottom_data[int(y2*width + x1)];
+      out_sum += (x2-px)*(y2-py) * bottom_data[int(y1*width + x1)];
+
+      top_data[index] = out_sum/4;
       mapping_channel[index] = c;
     }
   }
@@ -130,50 +167,74 @@ namespace caffe {
       // [start, end) interval for spatial sampling
       bottom_rois += n * 5;
       int roi_batch_ind = bottom_rois[0];
-      Dtype roi_start_w =
-        static_cast<Dtype>(round(bottom_rois[1])) * spatial_scale;
-      Dtype roi_start_h =
-        static_cast<Dtype>(round(bottom_rois[2])) * spatial_scale;
-      Dtype roi_end_w =
-        static_cast<Dtype>(round(bottom_rois[3]) + 1.) * spatial_scale;
-      Dtype roi_end_h =
-        static_cast<Dtype>(round(bottom_rois[4]) + 1.) * spatial_scale;
+      Dtype roi_start_w = bottom_rois[1] * spatial_scale;
+      Dtype roi_start_h = bottom_rois[2] * spatial_scale;
+      Dtype roi_end_w = bottom_rois[3] * spatial_scale;
+      Dtype roi_end_h = bottom_rois[4] * spatial_scale;
 
-      // Force too small ROIs to be 1x1
-      Dtype roi_width = max(roi_end_w - roi_start_w, 0.1);  // avoid 0
-      Dtype roi_height = max(roi_end_h - roi_start_h, 0.1);
+      Dtype roi_width = roi_end_w - roi_start_w;
+      Dtype roi_height = roi_end_h - roi_start_h;
 
       // Compute w and h at bottom
       Dtype bin_size_h = roi_height / static_cast<Dtype>(pooled_height);
       Dtype bin_size_w = roi_width / static_cast<Dtype>(pooled_width);
 
-      int hstart = floor(static_cast<Dtype>(ph)* bin_size_h
-        + roi_start_h);
-      int wstart = floor(static_cast<Dtype>(pw)* bin_size_w
-        + roi_start_w);
-      int hend = ceil(static_cast<Dtype>(ph + 1) * bin_size_h
-        + roi_start_h);
-      int wend = ceil(static_cast<Dtype>(pw + 1) * bin_size_w
-        + roi_start_w);
-      // Add roi offsets and clip to input boundaries
-      hstart = min(max(hstart, 0), height);
-      hend = min(max(hend, 0), height);
-      wstart = min(max(wstart, 0), width);
-      wend = min(max(wend, 0), width);
-      bool is_empty = (hend <= hstart) || (wend <= wstart);
+      int x1, x2, y1, y2 ;
+      float pxmin, pymin, pxmax, pymax, py, px;
+      pxmax = min(max(roi_start_w + static_cast<Dtype>(pw + 0.75) * bin_size_w, 0.001), width - 1.001);
+      pymax = min(max(roi_start_h + static_cast<Dtype>(ph + 0.75) * bin_size_h, 0.001), height - 1.001);
+      pxmin = min(max(roi_start_w + static_cast<Dtype>(pw + 0.25) * bin_size_w, 0.001), width - 1.001);
+      pymin = min(max(roi_start_h + static_cast<Dtype>(ph + 0.25) * bin_size_h, 0.001), height - 1.001);
 
       // Compute c at bottom
       int c = mapping_channel[index];
-      Dtype* offset_bottom_diff = bottom_diff +
-        (roi_batch_ind * channels + c) * height * width;
-      Dtype bin_area = (hend - hstart)*(wend - wstart);
-      Dtype diff_val = is_empty ? 0. : top_diff[index] / bin_area;
-      for (int h = hstart; h < hend; ++h) {
-        for (int w = wstart; w < wend; ++w) {
-          int bottom_index = h*width + w;
-          caffe_gpu_atomic_add(diff_val, offset_bottom_diff + bottom_index);
-        }
-      }
+      Dtype* offset_bottom_diff = bottom_diff + (roi_batch_ind * channels + c) * height * width;
+      Dtype diff_val = 0;
+      diff_val = top_diff[index]/4;
+
+      px = pxmin;
+      py = pymin;
+      x1 = floor(px);
+      x2 = ceil(px);
+      y1 = floor(py);
+      y2 = ceil(py);
+      caffe_gpu_atomic_add(diff_val * (px-x1)*(py-y1), offset_bottom_diff + int(y2*width + x2));
+      caffe_gpu_atomic_add(diff_val * (px-x1)*(y2-py), offset_bottom_diff + int(y1*width + x2));
+      caffe_gpu_atomic_add(diff_val * (x2-px)*(py-y1), offset_bottom_diff + int(y2*width + x1));
+      caffe_gpu_atomic_add(diff_val * (x2-px)*(y2-py), offset_bottom_diff + int(y1*width + x1));
+
+      px = pxmax;
+      py = pymax;
+      x1 = floor(px);
+      x2 = ceil(px);
+      y1 = floor(py);
+      y2 = ceil(py);
+      caffe_gpu_atomic_add(diff_val * (px-x1)*(py-y1), offset_bottom_diff + int(y2*width + x2));
+      caffe_gpu_atomic_add(diff_val * (px-x1)*(y2-py), offset_bottom_diff + int(y1*width + x2));
+      caffe_gpu_atomic_add(diff_val * (x2-px)*(py-y1), offset_bottom_diff + int(y2*width + x1));
+      caffe_gpu_atomic_add(diff_val * (x2-px)*(y2-py), offset_bottom_diff + int(y1*width + x1));
+
+      px = pxmin;
+      py = pymax;
+      x1 = floor(px);
+      x2 = ceil(px);
+      y1 = floor(py);
+      y2 = ceil(py);
+      caffe_gpu_atomic_add(diff_val * (px-x1)*(py-y1), offset_bottom_diff + int(y2*width + x2));
+      caffe_gpu_atomic_add(diff_val * (px-x1)*(y2-py), offset_bottom_diff + int(y1*width + x2));
+      caffe_gpu_atomic_add(diff_val * (x2-px)*(py-y1), offset_bottom_diff + int(y2*width + x1));
+      caffe_gpu_atomic_add(diff_val * (x2-px)*(y2-py), offset_bottom_diff + int(y1*width + x1));
+
+      px = pxmax;
+      py = pymin;
+      x1 = floor(px);
+      x2 = ceil(px);
+      y1 = floor(py);
+      y2 = ceil(py);
+      caffe_gpu_atomic_add(diff_val * (px-x1)*(py-y1), offset_bottom_diff + int(y2*width + x2));
+      caffe_gpu_atomic_add(diff_val * (px-x1)*(y2-py), offset_bottom_diff + int(y1*width + x2));
+      caffe_gpu_atomic_add(diff_val * (x2-px)*(py-y1), offset_bottom_diff + int(y2*width + x1));
+      caffe_gpu_atomic_add(diff_val * (x2-px)*(y2-py), offset_bottom_diff + int(y1*width + x1));
     }
   }
 
