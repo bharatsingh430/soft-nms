@@ -36,15 +36,15 @@ TEST_IMDB in {voc_0712_test,coco_2014_minival,coco_2014_test} is the test imdb
 TEST.SOFT_NMS in {0,1,2} is flag for different NMS algorithms. 0 is standard NMS, 1 performs soft-NMS with linear weighting and 2 performs soft-NMS with gaussian weighting
 
 Please refer to [py-R-FCN-multiGPU](https://github.com/bharatsingh430/py-R-FCN-multiGPU/) for details about setting up object detection pipelines.
-The Soft-NMS repository also contains code for training these detectors on multiple GPUs. The COCO detection model for R-FCN can be found [here](https://drive.google.com/file/d/0B6T5quL13CdHMGtMUWFFSXd2Ym8). All other detection models used in the paper are publicly available.
+The Soft-NMS repository also contains code for training these detectors on multiple GPUs. The COCO detection model for R-FCN can be found [here](https://drive.google.com/open?id=0B6T5quL13CdHX04xN1ZQX2IyMms). All other detection models used in the paper are publicly available.
 
 #### Results on MS-COCO
 
 |                   | training data       | test data          | mAP@[0.5:0.95]   | 
 |-------------------|:-------------------:|:-----------------------------:|:-----:|
-|R-FCN,       NMS   | COCO 2014 train+val -minival | COCO 2015 test-dev    | 31.1% |
-|R-FCN,  Soft-NMS L | COCO 2014 train+val -minival | COCO 2015 test-dev    | 32.2% |
-|R-FCN,  Soft-NMS G | COCO 2014 train+val -minival | COCO 2015 test-dev    | 32.4% |
+|R-FCN,       NMS   | COCO 2014 train+val -minival | COCO 2015 test-dev    | 33.9% |
+|R-FCN,  Soft-NMS L | COCO 2014 train+val -minival | COCO 2015 test-dev    | 34.8% |
+|R-FCN,  Soft-NMS G | COCO 2014 train+val -minival | COCO 2015 test-dev    | 35.1% |
 |F-RCNN, NMS        | COCO 2014 train+val -minival | COCO 2015 test-dev    | 24.4% |
 |F-RCNN, Soft-NMS L | COCO 2014 train+val -minival | COCO 2015 test-dev    | 25.5% |
 |F-RCNN, Soft-NMS G | COCO 2014 train+val -minival | COCO 2015 test-dev    | 25.5% |
