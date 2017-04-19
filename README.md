@@ -42,9 +42,9 @@ The Soft-NMS repository also contains code for training these detectors on multi
 
 |                   | training data       | test data          | mAP@[0.5:0.95]   | 
 |-------------------|:-------------------:|:-----------------------------:|:-----:|
-|R-FCN,       NMS   | COCO 2014 train+val -minival | COCO 2015 test-dev    | 33.9% |
-|R-FCN,  Soft-NMS L | COCO 2014 train+val -minival | COCO 2015 test-dev    | 34.8% |
-|R-FCN,  Soft-NMS G | COCO 2014 train+val -minival | COCO 2015 test-dev    | 35.1% |
+|R-FCN,       NMS   | COCO 2014 train+val -minival | COCO 2015 minival     | 33.9% |
+|R-FCN,  Soft-NMS L | COCO 2014 train+val -minival | COCO 2015 minival     | 34.8% |
+|R-FCN,  Soft-NMS G | COCO 2014 train+val -minival | COCO 2015 minival     | 35.1% |
 |F-RCNN, NMS        | COCO 2014 train+val -minival | COCO 2015 test-dev    | 24.4% |
 |F-RCNN, Soft-NMS L | COCO 2014 train+val -minival | COCO 2015 test-dev    | 25.5% |
 |F-RCNN, Soft-NMS G | COCO 2014 train+val -minival | COCO 2015 test-dev    | 25.5% |
