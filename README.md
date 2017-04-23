@@ -36,7 +36,7 @@ TEST_IMDB in {voc_0712_test,coco_2014_minival,coco_2014_test} is the test imdb
 TEST.SOFT_NMS in {0,1,2} is flag for different NMS algorithms. 0 is standard NMS, 1 performs soft-NMS with linear weighting and 2 performs soft-NMS with gaussian weighting
 
 Please refer to [py-R-FCN-multiGPU](https://github.com/bharatsingh430/py-R-FCN-multiGPU/) for details about setting up object detection pipelines.
-The Soft-NMS repository also contains code for training these detectors on multiple GPUs. **The position sensitive ROI Pooling layer is updated so that interpolation of bins is correct, like ROIAlign in Mask-RCNN**. The COCO detection model for R-FCN can be found [here](https://drive.google.com/open?id=0B6T5quL13CdHX04xN1ZQX2IyMms). All other detection models used in the paper are publicly available.
+The Soft-NMS repository also contains code for training these detectors on multiple GPUs. **The position sensitive ROI Pooling layer is updated so that interpolation of bins is correct, like ROIAlign in Mask RCNN**. The COCO detection model for R-FCN can be found [here](https://drive.google.com/open?id=0B6T5quL13CdHX04xN1ZQX2IyMms). All other detection models used in the paper are publicly available.
 
 #### Results on MS-COCO
 
