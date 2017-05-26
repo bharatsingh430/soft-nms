@@ -18,7 +18,8 @@ from fast_rcnn.nms_wrapper import nms, soft_nms
 import cPickle
 from utils.blob import im_list_to_blob
 import os
-
+from multiprocessing import Pool_
+app
 def _get_image_blob(im):
     """Converts an image into a network input.
 
@@ -224,6 +225,10 @@ def apply_nms(all_boxes, thresh):
             nms_boxes[cls_ind][im_ind] = dets[keep, :].copy()
     return nms_boxes
 
+def psoft(cls_dets):
+    keep = soft_nms(cls_dets, method=2)
+    return cls_dets[keep]
+
 def test_net(net, imdb, max_per_image=400, thresh=-np.inf, vis=False):
     """Test a Fast R-CNN network on an image database."""
     num_images = len(imdb.image_index)
@@ -240,7 +245,7 @@ def test_net(net, imdb, max_per_image=400, thresh=-np.inf, vis=False):
 
     if not cfg.TEST.HAS_RPN:
         roidb = imdb.roidb
-
+    p = Pool(27)
     for i in xrange(num_images):
         # filter out any ground truth boxes
         if cfg.TEST.HAS_RPN:
@@ -259,6 +264,7 @@ def test_net(net, imdb, max_per_image=400, thresh=-np.inf, vis=False):
         _t['im_detect'].toc()
 
         _t['misc'].tic()
+        commands = []
         # skip j = 0, because it's the background class
         for j in xrange(1, imdb.num_classes):
             inds = np.where(scores[:, j] > thresh)[0]
@@ -269,12 +275,14 @@ def test_net(net, imdb, max_per_image=400, thresh=-np.inf, vis=False):
                 cls_boxes = boxes[inds, j*4:(j+1)*4]
             cls_dets = np.hstack((cls_boxes, cls_scores[:, np.newaxis])) \
                 .astype(np.float32, copy=False)
-            keep = soft_nms(cls_dets, method=cfg.TEST.SOFT_NMS)
-            cls_dets = cls_dets[keep, :]
+            commands.append(cls_dets)
+            
+        nms_dets = p.map(psoft, commands)
+        for j in xrange(1, imdb.num_classes):
             if vis:
-                vis_detections(im, imdb.classes[j], cls_dets)
-            all_boxes[j][i] = cls_dets
-
+                vis_detections(im, imdb.classes[j], nms_dets[j-1])
+            all_boxes[j][i] = nms_dets[j-1]
+            
         # Limit to max_per_image detections *over all classes*
         if max_per_image > 0:
             image_scores = np.hstack([all_boxes[j][i][:, -1]
@@ -289,7 +297,7 @@ def test_net(net, imdb, max_per_image=400, thresh=-np.inf, vis=False):
         print 'im_detect: {:d}/{:d} {:.3f}s {:.3f}s' \
               .format(i + 1, num_images, _t['im_detect'].average_time,
                       _t['misc'].average_time)
-
+    p.close()
     det_file = os.path.join(output_dir, 'detections.pkl')
     with open(det_file, 'wb') as f:
         cPickle.dump(all_boxes, f, cPickle.HIGHEST_PROTOCOL)
