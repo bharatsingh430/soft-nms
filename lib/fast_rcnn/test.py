@@ -18,8 +18,8 @@ from fast_rcnn.nms_wrapper import nms, soft_nms
 import cPickle
 from utils.blob import im_list_to_blob
 import os
-from multiprocessing import Pool_
-app
+from multiprocessing import Pool
+
 def _get_image_blob(im):
     """Converts an image into a network input.
 
