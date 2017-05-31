@@ -229,7 +229,7 @@ def psoft(cls_dets):
     keep = soft_nms(cls_dets, method=2)
     return cls_dets[keep]
 
-def test_net(net, imdb, max_per_image=400, thresh=-np.inf, vis=False):
+def test_net(net, imdb, max_per_image=400, thresh=0.0001, vis=False):
     """Test a Fast R-CNN network on an image database."""
     num_images = len(imdb.image_index)
     # all detections are collected into:
