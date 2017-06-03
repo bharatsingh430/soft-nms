@@ -226,7 +226,7 @@ def apply_nms(all_boxes, thresh):
     return nms_boxes
 
 def psoft(cls_dets):
-    keep = soft_nms(cls_dets, method=2)
+    keep = soft_nms(cls_dets, method=cfg.TEST.SOFT_NMS)
     return cls_dets[keep]
 
 def test_net(net, imdb, max_per_image=400, thresh=0.0001, vis=False):
