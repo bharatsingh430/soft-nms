@@ -57,9 +57,9 @@ R-FCN uses ResNet-101 as the backbone CNN architecture, while Faster-RCNN is bas
 
 If you find this repository useful in your research, please consider citing:
 
-    @article{1704.04503,
+    @article{
       Author = {Navaneeth Bodla and Bharat Singh and Rama Chellappa and Larry S. Davis},
-      Title = {Improving Object Detection With One Line of Code},
+      Title = {Soft-NMS -- Improving Object Detection With One Line of Code},
       Booktitle = {Proceedings of the IEEE International Conference on Computer Vision},
       Year = {2017}
     }
