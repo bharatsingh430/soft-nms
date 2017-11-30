@@ -4,7 +4,7 @@ This repository includes the code for Soft-NMS. Soft-NMS is integrated with two 
 
 Soft-NMS is complementary to multi-scale testing and iterative bounding box regression. Check [MSRA](http://presentations.cocodataset.org/COCO17-Detect-MSRA.pdf) slides from the COCO 2017 challenge. 
 
-**8 out of top 15 submissions used Soft-NMS in the [COCO 2017 detection challenge](http://cocodataset.org/#detections-leaderboard)!.
+**8 out of top 15 submissions used Soft-NMS in the [COCO 2017 detection challenge](http://cocodataset.org/#detections-leaderboard)!.**
 
 We are also making our ICCV [reviews](http://www.cs.umd.edu/~bharat/reviews.html) and our [rebuttal](http://www.cs.umd.edu/~bharat/rebuttal.html) public. This should help to clarify some concerns which you may have.
 
