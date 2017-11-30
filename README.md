@@ -2,7 +2,11 @@
 
 This repository includes the code for Soft-NMS. Soft-NMS is integrated with two object detectors, R-FCN and Faster-RCNN. The Soft-NMS paper can be found [here](https://arxiv.org/pdf/1704.04503.pdf).
 
-### [Soft-NMS+D-RFCN](https://github.com/bharatsingh430/Deformable-ConvNets/) repository gets 40.9% mAP on COCO.
+[Soft-NMS+D-RFCN](https://github.com/bharatsingh430/Deformable-ConvNets/) repository gets 40.9% mAP on COCO.
+
+Soft-NMS is complementary to multi-scale testing and iterative bounding box regression. Check [MSRA](http://presentations.cocodataset.org/COCO17-Detect-MSRA.pdf) slides from the COCO 2017 challenge. 8 out of top 15 submissions used Soft-NMS in the [COCO 2017 detection challenge](http://cocodataset.org/#detections-leaderboard).
+
+We are also making our ICCV [reviews](http://www.cs.umd.edu/~bharat/reviews.html) and our [rebuttal](http://www.cs.umd.edu/~bharat/rebuttal.html) public. This should help to clarify some concerns which you may have.
 
 To test the models with soft-NMS, clone the project and test your models as in standard object detection pipelines. This repository supports Faster-RCNN and R-FCN where an additional flag can be used for soft-NMS.
 
