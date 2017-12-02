@@ -23,6 +23,8 @@ def cpu_soft_nms(np.ndarray[float, ndim=2] boxes, float sigma=0.5, float Nt=0.3,
     cdef int maxpos = 0
     cdef float x1,x2,y1,y2,tx1,tx2,ty1,ty2,ts,area,weight,ov
 
+    boxes = np.concatenate([boxes, boxes[:, 4].reshape((-1, 1))], axis=1)
+
     for i in range(N):
         maxscore = boxes[i, 4]
         maxpos = i
@@ -105,6 +107,8 @@ def cpu_soft_nms(np.ndarray[float, ndim=2] boxes, float sigma=0.5, float Nt=0.3,
                         pos = pos - 1
 
             pos = pos + 1
+
+    boxes = np.concatenate([boxes[:,:4], boxes[:,5].reshape((-1, 1))], axis=1)
 
     keep = [i for i in range(N)]
     return keep
