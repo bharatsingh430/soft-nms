@@ -95,14 +95,14 @@ def cpu_soft_nms(np.ndarray[float, ndim=2] boxes, float sigma=0.5, float Nt=0.3,
 		    
 		    # if box score falls below threshold, discard the box by swapping with last box
 		    # update N
-                    if boxes[pos, 4] < threshold:
-                        boxes[pos,0] = boxes[N-1, 0]
-                        boxes[pos,1] = boxes[N-1, 1]
-                        boxes[pos,2] = boxes[N-1, 2]
-                        boxes[pos,3] = boxes[N-1, 3]
-                        boxes[pos,4] = boxes[N-1, 4]
-                        N = N - 1
-                        pos = pos - 1
+            if boxes[pos, 4] < threshold:
+                boxes[pos,0] = boxes[N-1, 0]
+                boxes[pos,1] = boxes[N-1, 1]
+                boxes[pos,2] = boxes[N-1, 2]
+                boxes[pos,3] = boxes[N-1, 3]
+                boxes[pos,4] = boxes[N-1, 4]
+                N = N - 1
+                pos = pos - 1
 
             pos = pos + 1
 
